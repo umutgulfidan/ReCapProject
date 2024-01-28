@@ -13,8 +13,7 @@ internal class Program
 
         //DtoTest(); +
 
-        //UpdateTest(); +
-
+        UpdateTest();
     }
 
     private static void UpdateTest()
