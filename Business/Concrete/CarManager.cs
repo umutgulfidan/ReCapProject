@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,44 +20,47 @@ namespace Business.Concrete
             _carDal = carDal;   
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             //iş kodları
-            if(car.CarName.Length >= 2 && car.DailyPrice > 0)
+            if(car.CarName.Length < 2 && car.DailyPrice <= 0)
             {
-                _carDal.Add(car);
+                return new ErrorResult(Messages.InvalidCarData);
             }
-
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
              _carDal.Delete(car);
+            return new SuccessResult(Messages.CarDeleted);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails(),Messages.CarsDetailListed);
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return _carDal.GetAll(car=> car.BrandId == brandId);
+            return new SuccessDataResult<List<Car>> (_carDal.GetAll(car => car.BrandId == brandId),Messages.CarsListedByBrandId);
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return _carDal.GetAll(car=> car.ColorId == colorId);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(car => car.ColorId == colorId),Messages.CarsListedByColorId);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
         }
     }
 }
