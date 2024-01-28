@@ -1,4 +1,5 @@
-﻿using Entities.Abstract;
+﻿
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Abstract
+namespace Core.DataAccess
 {
-    public interface IEntityRepository <TEntity> where TEntity : class,IEntity, new()
+    public interface IEntityRepository <TEntity> where TEntity : class, IEntity, new()
     {
         void Add(TEntity entity);
         void Update(TEntity entity);
