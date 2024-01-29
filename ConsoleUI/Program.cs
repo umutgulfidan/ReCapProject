@@ -4,17 +4,50 @@ using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Channels;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        AddTest();
+        //    AddTest();
+        //    DtoTest();
+        //    UpdateTest();
+        // UserTest(); +
+         CustomerTest();
+        // RentalTest(); +
 
-        DtoTest();
+    }
+    private static void RentalTest()
+    {
+        RentalManager rentalManager = new RentalManager(new EfRentalDal());
+        rentalManager.Add(new Rental() { CarId=1,CustomerId=1,RentDate=DateTime.Now,ReturnDate=null});
 
-        UpdateTest();
-
+        //Burada patlaması lazım çünnkü öncesinde arabayı kiralattık ve dönmedi ReturnDate = null
+        var result = rentalManager.Add(new Rental() { CarId = 1, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = null }).IsSuccess
+            ? "Eklendi" : "Eklenemedi";
+        Console.WriteLine(result);
+    }
+    private static void UserTest()
+    {
+        UserManager userManager = new UserManager(new EfUserDal());
+        userManager.Add(new User() { FirstName = "Test",LastName="DENEME",Email="deneme@gmail.com",Password="12345" });
+        userManager.Update(new User() { Id = 1, FirstName = "Test", LastName = "Test User Updated", Email = "deneme@gmail.com", Password = "12345" });
+        userManager.Add(new User() { FirstName = "Test2", LastName = "DENEME", Email = "deneme@gmail.com", Password = "12345" });
+        userManager.Add(new User() { FirstName = "Test3", LastName = "DENEME", Email = "deneme@gmail.com", Password = "12345" });
+        userManager.GetAll().Data.ForEach(u => Console.WriteLine(u.FirstName + "  " + u.LastName));
+        userManager.Delete(new User() { Id = 3 });
+        userManager.GetAll().Data.ForEach(u => Console.WriteLine(u.FirstName + "  " + u.LastName));
+    }
+    private static void CustomerTest()
+    {
+        CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+        customerManager.Add(new Customer() { UserId =1 ,CompanyName= "TEST COMPANY"});
+        customerManager.Update(new Customer() { Id = 1,UserId = 1, CompanyName = "Test Company Updated" });
+        customerManager.Add(new Customer() { UserId=2,CompanyName = "Silinecek Customer"});
+        customerManager.GetAll().Data.ForEach(c=> Console.WriteLine(c.UserId +"  "+c.CompanyName));
+        customerManager.Delete(new Customer() { Id= 2 });
+        customerManager.GetAll().Data.ForEach(c => Console.WriteLine(c.UserId + "  " + c.CompanyName));
     }
 
     private static void UpdateTest()
