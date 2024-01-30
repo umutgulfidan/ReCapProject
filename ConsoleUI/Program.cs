@@ -10,12 +10,13 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //    AddTest();
-        //    DtoTest();
-        //    UpdateTest();
+        //    AddTest(); +
+        //    DtoTest(); +
+        //    UpdateTest(); +
+
         // UserTest(); +
-         CustomerTest();
-        // RentalTest(); +
+        // CustomerTest(); +
+        RentalTest();
 
     }
     private static void RentalTest()
