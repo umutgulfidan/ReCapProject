@@ -1,11 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,10 +24,14 @@ namespace Business.Concrete
 
         public IResult Add(Color color)
         {
-            if (color.ColorName.Length < 2)
+            var context = new ValidationContext<Color>(color);
+            ColorValidator colorValidator = new ColorValidator();
+            var result = colorValidator.Validate(context);
+            if (!result.IsValid)
             {
-                return new ErrorResult(Messages.ColorNameInvalid);   
+                throw new ValidationException(result.Errors);
             }
+
             _colorDal.Add(color);
             return new SuccessResult(Messages.ColorAdded);
         }

@@ -1,8 +1,10 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,14 @@ namespace Business.Concrete
         }
         public IResult Add(User user)
         {
+            var context = new ValidationContext<User>(user);
+            UserValidator userValidator = new UserValidator();
+            var result = userValidator.Validate(context);
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
+
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
