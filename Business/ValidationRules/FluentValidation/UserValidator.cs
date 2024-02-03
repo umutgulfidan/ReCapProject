@@ -30,25 +30,38 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Password).Must(IsContainLetter).Must(IsContainDigit).Must(IsContainSpecialCharacter).WithMessage(Messages.PasswordRequirements);
         }
 
+        // Sadece karakter oluşup oluşmadığını kontrol eder.
         private bool IsLetter(string arg)
         {
             Regex regex = new Regex(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ]+$");
             return regex.IsMatch(arg);
         }
 
+        //karakter içeriyor mu kontrol eder
         private bool IsContainLetter(string arg)
         {
             return arg.Any(char.IsLetter);
         }
+        //sayı içeriyor mu kontrol eder.
         private bool IsContainDigit(string arg)
         {
             return arg.Any(char.IsDigit);
         }
+        //özel karakter içeriyor mu kontrol eder
         private bool IsContainSpecialCharacter(string arg)
         {
             char[] specialCharacters = new char[] { '@', '#', '$', '!', '.', ',', '*', '-', '_', ';', '+', '-', '<', '>' };
 
-            return arg.Any(char.IsLetter);
+            bool isContain = false;
+            foreach (var item in specialCharacters)
+            {
+                if (arg.Contains(item))
+                {
+                    isContain = true;
+                    break;
+                }
+            };
+            return isContain;
         }
     }
 }
