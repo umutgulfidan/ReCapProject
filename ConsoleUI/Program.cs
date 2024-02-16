@@ -1,5 +1,6 @@
 ﻿
 using Business.Concrete;
+using Core.Entities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -32,10 +33,10 @@ internal class Program
     private static void UserTest()
     {
         UserManager userManager = new UserManager(new EfUserDal());
-        userManager.Add(new User() { FirstName = "Test",LastName="DENEME",Email="deneme@gmail.com",Password="12345" });
-        userManager.Update(new User() { Id = 1, FirstName = "Test", LastName = "Test User Updated", Email = "deneme@gmail.com", Password = "12345" });
-        userManager.Add(new User() { FirstName = "Test2", LastName = "DENEME", Email = "deneme@gmail.com", Password = "12345" });
-        userManager.Add(new User() { FirstName = "Test3", LastName = "DENEME", Email = "deneme@gmail.com", Password = "12345" });
+        userManager.Add(new User() { FirstName = "Test",LastName="DENEME",Email="deneme@gmail.com" });
+        userManager.Update(new User() { Id = 1, FirstName = "Test", LastName = "Test User Updated", Email = "deneme@gmail.com"});
+        userManager.Add(new User() { FirstName = "Test2", LastName = "DENEME", Email = "deneme@gmail.com" });
+        userManager.Add(new User() { FirstName = "Test3", LastName = "DENEME", Email = "deneme@gmail.com" });
         userManager.GetAll().Data.ForEach(u => Console.WriteLine(u.FirstName + "  " + u.LastName));
         userManager.Delete(new User() { Id = 3 });
         userManager.GetAll().Data.ForEach(u => Console.WriteLine(u.FirstName + "  " + u.LastName));

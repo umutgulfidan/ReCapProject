@@ -1,5 +1,5 @@
 ﻿using Business.Constants;
-using Entities.Concrete;
+using Core.Entities.Concrete;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -25,9 +25,6 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Email).NotEmpty();
             RuleFor(u => u.Email).EmailAddress();
 
-            RuleFor(u => u.Password).NotEmpty();
-            RuleFor(u => u.Password).MinimumLength(6);
-            RuleFor(u => u.Password).Must(IsContainLetter).Must(IsContainDigit).Must(IsContainSpecialCharacter).WithMessage(Messages.PasswordRequirements);
         }
 
         // Sadece karakter oluşup oluşmadığını kontrol eder.
@@ -37,31 +34,5 @@ namespace Business.ValidationRules.FluentValidation
             return regex.IsMatch(arg);
         }
 
-        //karakter içeriyor mu kontrol eder
-        private bool IsContainLetter(string arg)
-        {
-            return arg.Any(char.IsLetter);
-        }
-        //sayı içeriyor mu kontrol eder.
-        private bool IsContainDigit(string arg)
-        {
-            return arg.Any(char.IsDigit);
-        }
-        //özel karakter içeriyor mu kontrol eder
-        private bool IsContainSpecialCharacter(string arg)
-        {
-            char[] specialCharacters = new char[] { '@', '#', '$', '!', '.', ',', '*', '-', '_', ';', '+', '-', '<', '>' };
-
-            bool isContain = false;
-            foreach (var item in specialCharacters)
-            {
-                if (arg.Contains(item))
-                {
-                    isContain = true;
-                    break;
-                }
-            };
-            return isContain;
-        }
     }
 }
