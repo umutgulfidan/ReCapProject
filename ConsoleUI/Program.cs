@@ -23,10 +23,10 @@ internal class Program
     private static void RentalTest()
     {
         RentalManager rentalManager = new RentalManager(new EfRentalDal());
-        rentalManager.Add(new Rental() { CarId=1,CustomerId=1,RentDate=DateTime.Now,ReturnDate=null});
+        rentalManager.Add(new Rental() { CarId=1,UserId=1,RentDate=DateTime.Now,ReturnDate=null});
 
         //Burada patlaması lazım çünnkü öncesinde arabayı kiralattık ve dönmedi ReturnDate = null
-        var result = rentalManager.Add(new Rental() { CarId = 1, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = null }).IsSuccess
+        var result = rentalManager.Add(new Rental() { CarId = 1, UserId = 1, RentDate = DateTime.Now, ReturnDate = null }).IsSuccess
             ? "Eklendi" : "Eklenemedi";
         Console.WriteLine(result);
     }
